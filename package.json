@@ -4,10 +4,10 @@
   "description": "api",
   "main": "",
   "dependencies": {
-    "serverless": "^1.54.0"
+    "serverless": "^2.67.0"
   },
   "devDependencies": {
-    "serverless-offline": "^5.12.0",
+    "serverless-offline": "^8.3.1",
     "serverless-offline-elasticmq": "0.0.11",
     "serverless-offline-sqs": "^6.0.0",
     "serverless-offline-sqs-external": "^1.0.6"

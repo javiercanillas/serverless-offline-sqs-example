@@ -1,6 +1,6 @@
 'use strict'
-/* global console */
+/* global console, module */
 
-module.export.consumeSQS = (event) => {
+module.exports.consumeSQS = (event) => {
   console.log('Hello!!!!!');
 }

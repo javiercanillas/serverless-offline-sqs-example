@@ -35,13 +35,13 @@ custom:
         port: 9432 # The port number that elasticmq uses to communicate with your application. If you don't specify this option, the default port is 9432. If port 8000 is unavailable, this command throws an exception. You can use the port option to specify a different port number
         noStart: false # Does not start elasticmq. This option is useful if you already have a running instance of elasticmq locally
 functions:
-  order-get:
+  sqs-post:
     handler: controller.post
     events:
       - http:
           path: /{orderid}
           method: post
-  order-sqs-consumer:
+  sqs-consumer:
     handler: consumer.consumeSQS
     events:
       - sqs: arn:aws:sqs:region:XXXXXX:MyFirstQueue
