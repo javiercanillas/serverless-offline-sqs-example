@@ -1,0 +1,53 @@
+service: sqs-test
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: sa-east-1
+  tracing:
+    lambda: true
+    apiGateway: true
+    dynamoDB: true
+    sqs: true
+  environment:
+    MY_FIRST_QUEUE_URL: { Ref: MyFirstQueue }
+
+plugins:
+  - serverless-offline-elasticmq
+  - serverless-offline
+  - serverless-offline-sqs-external
+custom:
+  serverless-offline-sqs-external:
+    autoCreate: true                 # create queue if not exists
+    apiVersion: '2012-11-05'
+    host: localhost
+    port: 9432
+    https: false # default false
+    region: sa-east-1
+    accessKeyId: root
+    secretAccessKey: root
+    skipCacheInvalidation: false
+  elasticmq:
+      # If you only want to use elasticmq Offline in some stages, declare them here
+      stages:
+        - dev
+      start:
+        port: 9432 # The port number that elasticmq uses to communicate with your application. If you don't specify this option, the default port is 9432. If port 8000 is unavailable, this command throws an exception. You can use the port option to specify a different port number
+        noStart: false # Does not start elasticmq. This option is useful if you already have a running instance of elasticmq locally
+functions:
+  order-get:
+    handler: controller.post
+    events:
+      - http:
+          path: /{orderid}
+          method: post
+  order-sqs-consumer:
+    handler: consumer.consumeSQS
+    events:
+      - sqs: arn:aws:sqs:region:XXXXXX:MyFirstQueue
+resources:
+  Resources:
+    MyFirstQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: MyFirstQueue
